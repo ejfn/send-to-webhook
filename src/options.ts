@@ -1,0 +1,50 @@
+function getWebhooksTextArea(): HTMLTextAreaElement {
+  return document.getElementById('webhooks') as HTMLTextAreaElement;
+}
+
+function getSaveStatus(): HTMLSpanElement {
+  return document.getElementById('save-status') as HTMLSpanElement;
+}
+
+function getSaveButton(): HTMLButtonElement {
+  return document.getElementById('save') as HTMLButtonElement;
+}
+
+// Saves options to chrome.storage
+function save_options() {
+  const webhooksTa = getWebhooksTextArea();
+  try {
+    JSON.parse(webhooksTa.value);
+  } catch (error) {
+    const status = getSaveStatus();
+    status.textContent = 'Invalid json.';
+    return;
+  }
+  chrome.storage.sync.set({
+    webhooks: webhooksTa.value
+  }, () => {
+    // reload extension
+    chrome.runtime.reload();
+    const status = getSaveStatus();
+    status.textContent = 'Options saved.';
+    setTimeout(() => {
+      status.textContent = '';
+      window.close();
+    }, 750);
+  });
+}
+
+// Restores select box and checkbox state using the preferences
+// stored in chrome.storage.
+function restore_options() {
+  chrome.storage.sync.get({
+    webhooks: '[]'
+  }, (items) => {
+    const webhooksTa = getWebhooksTextArea();
+    webhooksTa.value = items.webhooks;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', restore_options);
+const saveButton = getSaveButton();
+saveButton.addEventListener('click', save_options);

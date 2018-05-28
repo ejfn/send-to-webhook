@@ -1,0 +1,24 @@
+{
+  "name": "send-to-webhook",
+  "version": "1.0.0",
+  "author": "Eric",
+  "license": "MIT",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "tslint": "tslint --project tsconfig.json -t stylish",
+    "qualitycheck": "npm-run-all typecheck tslint",
+    "tsc": "tsc",
+    "watch": "tsc --watch",
+    "minify": "./node_modules/.bin/minify dist/js -d dist/js",
+    "build": "npm-run-all tsc minify"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "^0.0.66",
+    "@types/google.analytics": "^0.0.39",
+    "babel-minify": "^0.4.3",
+    "npm-run-all": "^4.1.3",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3"
+  }
+}
