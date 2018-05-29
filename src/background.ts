@@ -2,7 +2,11 @@
 function send(param: string | undefined, action: WebhookAction) {
   if (param !== undefined && action !== undefined) {
     const { method, url, payload } = action;
-    fetch(url, { method, body: JSON.stringify(payload).replace('%s', param) })
+    let body;
+    if (payload !== undefined) {
+      body = JSON.stringify(payload).replace('%s', param);
+    }
+    fetch(url, { method: method || 'POST', body })
       .then((resp) => {
         alert(`Status: ${resp.status} - ${resp.statusText}`);
       })

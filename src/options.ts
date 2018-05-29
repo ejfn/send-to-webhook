@@ -18,7 +18,8 @@ function save_options() {
     webhooks = JSON.parse(webhooksTa.value);
   } catch (error) {
     const status = getSaveStatus();
-    status.textContent = 'Invalid json.';
+    status.className = 'error';
+    status.textContent = 'ERROR: Invalid json!';
     return;
   }
   chrome.storage.sync.set({
@@ -27,6 +28,7 @@ function save_options() {
     // reload extension
     chrome.runtime.reload();
     const status = getSaveStatus();
+    status.className = '';
     status.textContent = 'Options saved.';
     setTimeout(() => {
       status.textContent = '';

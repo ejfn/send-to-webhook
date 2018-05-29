@@ -6,7 +6,7 @@ interface Webhook {
 }
 
 interface WebhookAction {
-  method: 'GET' | 'POST';
+  method?: 'GET' | 'POST';
   url: string;
   payload?: any;
 }

@@ -1,8 +1,10 @@
-
-.item {
-  margin: 2px 5px;
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.buttons {
-  margin-top: 20px;
+.error {
+  color: #f00;
 }
