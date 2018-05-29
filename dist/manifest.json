@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Send To WebHook",
-  "version": "1.0.0",
-  "description": "Send selected text or link to webhooks by filters",
+  "version": "1.0.2",
+  "description": "Send link, image or selected text to webhooks by filters",
   "background": {
     "scripts": [
       "js/google-analytics.js",
