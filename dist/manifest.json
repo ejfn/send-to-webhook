@@ -1,15 +1,15 @@
 {
   "manifest_version": 2,
   "name": "Send To WebHook",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Send link, image or selected text to webhooks by filters",
+  "homepage_url": "https://github.com/ericvan76/send-to-webhook",
   "background": {
     "scripts": [
       "js/google-analytics.js",
       "js/background.js"
     ]
   },
-  "browser_action": {},
   "permissions": [
     "contextMenus",
     "storage"
