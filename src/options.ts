@@ -13,15 +13,16 @@ function getSaveButton(): HTMLButtonElement {
 // Saves options to chrome.storage
 function save_options() {
   const webhooksTa = getWebhooksTextArea();
+  let webhooks;
   try {
-    JSON.parse(webhooksTa.value);
+    webhooks = JSON.parse(webhooksTa.value);
   } catch (error) {
     const status = getSaveStatus();
     status.textContent = 'Invalid json.';
     return;
   }
   chrome.storage.sync.set({
-    webhooks: webhooksTa.value
+    webhooks: JSON.stringify(webhooks)
   }, () => {
     // reload extension
     chrome.runtime.reload();
@@ -40,8 +41,9 @@ function restore_options() {
   chrome.storage.sync.get({
     webhooks: '[]'
   }, (items) => {
+    const webhooks = JSON.parse(items.webhooks);
     const webhooksTa = getWebhooksTextArea();
-    webhooksTa.value = items.webhooks;
+    webhooksTa.value = JSON.stringify(webhooks, null, 2);
   });
 }
 
