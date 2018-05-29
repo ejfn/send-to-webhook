@@ -32,7 +32,7 @@ chrome.storage.sync.get({
       // Add context menu
       chrome.contextMenus.create({
         documentUrlPatterns: webhook.documentUrlPatterns,
-        title: `Send link to ${webhook.name}`,
+        title: `Send Link to ${webhook.name}`,
         contexts: ['link'],
         targetUrlPatterns: webhook.targetUrlPatterns,
         onclick: (info) => {
@@ -41,7 +41,7 @@ chrome.storage.sync.get({
       });
       chrome.contextMenus.create({
         documentUrlPatterns: webhook.documentUrlPatterns,
-        title: `Send image to ${webhook.name}`,
+        title: `Send Image to ${webhook.name}`,
         contexts: ['image'],
         targetUrlPatterns: webhook.targetUrlPatterns,
         onclick: (info) => {
