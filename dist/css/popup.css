@@ -1,0 +1,25 @@
+body {
+  margin: 0px;
+}
+
+hr {
+  border-style: solid;
+  border-width: 0.5px;
+  border-color: #eee;
+}
+
+.vertical-menu {
+width: 200px;
+}
+
+.vertical-menu a {
+  color: black;
+  display: block;
+  padding: 5px 25px;
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  background-color: #eee;
+}
+
