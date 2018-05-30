@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Send To WebHook",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Send link, image or selected text to webhooks by filters",
   "homepage_url": "https://github.com/ericvan76/send-to-webhook",
   "background": {

@@ -9,7 +9,7 @@ hr {
 }
 
 .vertical-menu {
-width: 200px;
+  width: 200px;
 }
 
 .vertical-menu a {
@@ -17,6 +17,7 @@ width: 200px;
   display: block;
   padding: 5px 25px;
   text-decoration: none;
+  outline: none;
 }
 
 .vertical-menu a:hover {
