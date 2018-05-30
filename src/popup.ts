@@ -1,27 +1,10 @@
-function openHome() {
-  const url = chrome.runtime.getManifest().homepage_url;
-  if (url !== undefined) {
-    chrome.tabs.create({ url });
-  }
-}
+const developersUrl = 'https://github.com/ericvan76/send-to-webhook';
 
-function openSupport() {
-  const url = chrome.runtime.getManifest().homepage_url;
-  if (url !== undefined) {
-    chrome.tabs.create({ url: `${url}/issues` });
-  }
-}
+let menu = document.getElementById('options') as HTMLAnchorElement;
+menu.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
-function openOptions() {
-  chrome.runtime.openOptionsPage();
-}
+menu = document.getElementById('developers') as HTMLAnchorElement;
+menu.addEventListener('click', () => chrome.tabs.create({ url: developersUrl }));
 
-const homeMenu = document.getElementById('home') as HTMLAnchorElement;
-homeMenu.text = chrome.runtime.getManifest().name;
-homeMenu.addEventListener('click', openHome);
-
-const optionsMenu = document.getElementById('options') as HTMLAnchorElement;
-optionsMenu.addEventListener('click', openOptions);
-
-const supportMenu = document.getElementById('support') as HTMLAnchorElement;
-supportMenu.addEventListener('click', openSupport);
+menu = document.getElementById('issues') as HTMLAnchorElement;
+menu.addEventListener('click', () => chrome.tabs.create({ url: `${developersUrl}/issues` }));

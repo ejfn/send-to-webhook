@@ -2,7 +2,7 @@
 
 A Chrome Extension, send link, image or selected text to webhooks by filters
 
-See [Extension page](https://goo.gl/kbwRVB)
+See [Extension Page](https://goo.gl/kbwRVB)
 
 ### How to Configure
 

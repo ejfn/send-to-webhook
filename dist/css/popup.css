@@ -1,10 +1,10 @@
 body {
-  margin: 0px;
+  margin: 5px;
 }
 
 hr {
   border-style: solid;
-  border-width: 0.5px;
+  border-width: 0 0 1px 0;
   border-color: #eee;
 }
 
@@ -15,7 +15,7 @@ hr {
 .vertical-menu a {
   color: black;
   display: block;
-  padding: 5px 25px;
+  padding: 7px 21px;
   text-decoration: none;
   outline: none;
 }
