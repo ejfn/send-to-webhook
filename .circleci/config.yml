@@ -24,7 +24,8 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run :
+      - run:
+          name: "Install dependencies"
           command: |
             sudo apt-get update
             sudo apt-get install -y curl
@@ -34,8 +35,8 @@ jobs:
       - run:
           name: "Set Version Number"
           command: |
-            echo 'export VERSION='$(jq -r '.version' dist/manifest.json) >> $BASH_ENV
-            echo 'export BUILD_NUM'=$((CIRCLE_BUILD_NUM-14)) >> $BASH_ENV
+            echo export VERSION=$(jq -r '.version' dist/manifest.json) >> $BASH_ENV
+            echo export BUILD_NUM=$((CIRCLE_BUILD_NUM)) >> $BASH_ENV
             source $BASH_ENV
             jq '.version="'$VERSION.$BUILD_NUM'"' dist/manifest.json | sponge dist/manifest.json
 
@@ -45,7 +46,7 @@ jobs:
             yarn install
             yarn qualitycheck
             yarn build
-            git archive -o dist.zip HEAD dist
+            zip -r dist.zip dist/
 
       - run:
           name: "Upload & Publish Extension to the Google Chrome Store"
