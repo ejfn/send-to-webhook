@@ -13,7 +13,7 @@ function getSaveButton(): HTMLButtonElement {
 // Saves options to chrome.storage
 function save_options() {
   const webhooksTa = getWebhooksTextArea();
-  let webhooks;
+  let webhooks: Webhook[];
   try {
     webhooks = JSON.parse(webhooksTa.value);
   } catch (error) {
@@ -43,7 +43,7 @@ function restore_options() {
   chrome.storage.sync.get({
     webhooks: '[]'
   }, (items) => {
-    const webhooks = JSON.parse(items.webhooks);
+    const webhooks: Webhook[] = JSON.parse(items.webhooks);
     const webhooksTa = getWebhooksTextArea();
     webhooksTa.value = JSON.stringify(webhooks, null, 2);
   });

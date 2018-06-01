@@ -6,7 +6,18 @@
 </head>
 
 <body>
+
   <div class="vertical-menu">
+    <div class="arbitrary">
+      <label>Send arbitrary text</label>
+      <textarea id="content"></textarea>
+      <div class="row">
+        <select id="webhooks"></select>
+        <button id="send">Send</button>
+      </div>
+      <label id="send-status"></label>
+    </div>
+    <hr/>
     <a id="options" href="#">Options</a>
     <hr/>
     <a id="developers" href="#">Developer's page</a>
@@ -14,6 +25,7 @@
   </div>
 
   <!-- scripts -->
+  <script src="js/google-analytics.js"></script>
   <script src="js/popup.js"></script>
 
 </body>

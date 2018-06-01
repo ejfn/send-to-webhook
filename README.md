@@ -102,6 +102,7 @@ I want to grab a matched .ipa or .apk link from Expo's build page, and send to B
 ### What's New
 | Date | Description |
 | ---- | ----------- |
+| 2018-06-02 | Add ability to send arbitrary text |
 | 2018-05-29 | First published |
 
 ### Help us

@@ -8,24 +8,27 @@ function send(param: string | undefined, action: WebhookAction) {
     }
     fetch(url, { method: method || 'POST', body })
       .then((resp) => {
-        alert(`Status: ${resp.status} - ${resp.statusText}`);
+        alert(resp.status >= 400 ? `Error: ${resp.status}` : `Sent!`);
       })
       .catch((reason) => {
-        alert(`Error: ${reason}}`);
+        alert(`Error: ${reason}`);
       });
     // @see: http://stackoverflow.com/a/22152353/1958200
     ga('set', 'checkProtocolTask', () => { /* do nothing */ });
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview', '/');
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'webhook',
+      eventAction: 'send'
+    });
   } else {
-    alert('Could not send webhook, please check you configuration.');
+    alert('Error: Webhook action is not defined.');
   }
 }
 
 chrome.storage.sync.get({
   webhooks: '[]'
 }, (items) => {
-  const webhooks = JSON.parse(items.webhooks) as Webhook[];
+  const webhooks: Webhook[] = JSON.parse(items.webhooks);
   webhooks.forEach((webhook) => {
     const isLink = webhook.targetUrlPatterns !== undefined && webhook.targetUrlPatterns.length > 0;
     if (isLink) {
