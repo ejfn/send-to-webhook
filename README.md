@@ -1,5 +1,7 @@
 ## Send To WebHook
 
+[![CircleCI](https://circleci.com/gh/ericvan76/send-to-webhook/tree/master.svg?style=svg)](https://circleci.com/gh/ericvan76/send-to-webhook/tree/master)
+
 A Chrome Extension, send link, image or selected text to webhooks by filters
 
 See [Extension Page](https://goo.gl/kbwRVB)
