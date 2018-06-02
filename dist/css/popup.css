@@ -1,6 +1,6 @@
 body {
   margin: 5px;
-  width: 300px;
+  width: 320px;
   display: flex;
   flex-direction: column;
 }
@@ -30,13 +30,13 @@ hr {
 }
 
 .arbitrary select {
-  max-width: 70%;
+  max-width: 50%;
 }
 
 #send-status {
-  display: block;
-  width: 100%;
-  text-align: right;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .vertical-menu a {
@@ -56,7 +56,6 @@ hr {
   flex-direction: row;
   justify-content: space-between;
 }
-
 
 .error {
   color: #f00;

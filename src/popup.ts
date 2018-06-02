@@ -36,30 +36,30 @@ function sendArbitrary() {
       if (payload !== undefined) {
         body = JSON.stringify(payload).replace('%s', content);
       }
+      sendStatus.className = '';
+      sendStatus.textContent = 'Sending...';
       fetch(url, {
         method: method || 'POST',
-        body,
         headers: {
           'content-type': 'application/json'
         },
-        mode: 'no-cors'
-      })
-        .then((resp) => {
-          if (resp.status >= 400) {
-            sendStatus.className = 'error';
-            sendStatus.textContent = `Error: ${resp.status}`;
-          } else {
-            sendStatus.className = '';
-            sendStatus.textContent = `Sent!`;
-            setTimeout(() => {
-              sendStatus.className = '';
-              sendStatus.textContent = '';
-            }, 750);
-          }
-        }).catch((reason) => {
+        body
+      }).then((resp) => {
+        if (resp.status >= 400) {
           sendStatus.className = 'error';
-          sendStatus.textContent = `Error: ${reason}`;
-        });
+          sendStatus.textContent = `${resp.status}`;
+        } else {
+          sendStatus.className = '';
+          sendStatus.textContent = 'Sent!';
+          setTimeout(() => {
+            sendStatus.className = '';
+            sendStatus.textContent = '';
+          }, 750);
+        }
+      }).catch((reason) => {
+        sendStatus.className = 'error';
+        sendStatus.textContent = reason;
+      });
       // @see: http://stackoverflow.com/a/22152353/1958200
       ga('set', 'checkProtocolTask', () => { /* do nothing */ });
       ga('send', {
@@ -70,7 +70,7 @@ function sendArbitrary() {
 
     } else {
       sendStatus.className = 'error';
-      sendStatus.textContent = 'Error: Webhook action is not defined.';
+      sendStatus.textContent = 'Action not defined.';
     }
   }
 }

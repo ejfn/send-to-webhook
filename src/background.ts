@@ -8,18 +8,15 @@ function send(param: string | undefined, action: WebhookAction) {
     }
     fetch(url, {
       method: method || 'POST',
-      body,
       headers: {
         'content-type': 'application/json'
       },
-      mode: 'no-cors'
-    })
-      .then((resp) => {
-        alert(resp.status >= 400 ? `Error: ${resp.status}` : `Sent!`);
-      })
-      .catch((reason) => {
-        alert(`Error: ${reason}`);
-      });
+      body
+    }).then((resp) => {
+      alert(resp.status >= 400 ? `Error: ${resp.status}` : 'Successfully Sent!');
+    }).catch((reason) => {
+      alert(`Error: ${reason}`);
+    });
     // @see: http://stackoverflow.com/a/22152353/1958200
     ga('set', 'checkProtocolTask', () => { /* do nothing */ });
     ga('send', {
