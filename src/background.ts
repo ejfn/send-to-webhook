@@ -12,7 +12,7 @@ function send(param: string | undefined, action: WebhookAction) {
       headers: {
         'content-type': 'application/json'
       },
-      mode: 'cors'
+      mode: 'no-cors'
     })
       .then((resp) => {
         alert(resp.status >= 400 ? `Error: ${resp.status}` : `Sent!`);

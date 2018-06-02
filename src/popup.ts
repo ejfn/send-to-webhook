@@ -42,7 +42,7 @@ function sendArbitrary() {
         headers: {
           'content-type': 'application/json'
         },
-        mode: 'cors'
+        mode: 'no-cors'
       })
         .then((resp) => {
           if (resp.status >= 400) {
