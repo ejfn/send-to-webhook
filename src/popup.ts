@@ -11,13 +11,15 @@ let webhooks: Webhook[];
 
 function load_webhooks() {
   chrome.storage.sync.get({
-    webhooks: '[]'
+    webhooks: '[]',
+    lastHook: ''
   }, (items) => {
     webhooks = JSON.parse(items.webhooks);
     for (let i = 0; i < webhooks.length; i++) {
       const opt = document.createElement('option');
       opt.value = i.toString();
       opt.text = webhooks[i].name;
+      opt.selected = webhooks[i].name === items.lastHook;
       webhookSel.add(opt);
     }
   });
@@ -57,6 +59,10 @@ function sendArbitrary() {
       }).catch((reason) => {
         sendStatus.className = 'error';
         sendStatus.textContent = reason;
+      });
+      // save last hook
+      chrome.storage.sync.set({
+        lastHook: webhooks[webhookSel.selectedIndex].name
       });
       // @see: http://stackoverflow.com/a/22152353/1958200
       ga('set', 'checkProtocolTask', () => { /* do nothing */ });

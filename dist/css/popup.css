@@ -24,13 +24,15 @@ hr {
   resize: vertical;
   width: 100%;
   height: 100px;
+  margin: 5px 0;
   text-decoration: none;
   outline: none;
-  margin: 5px 0;
 }
 
 .arbitrary select {
   max-width: 50%;
+  text-decoration: none;
+  outline: none;
 }
 
 #send-status {
