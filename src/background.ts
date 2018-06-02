@@ -17,8 +17,8 @@ function send(param: string | undefined, action: WebhookAction) {
     ga('set', 'checkProtocolTask', () => { /* do nothing */ });
     ga('send', {
       hitType: 'event',
-      eventCategory: 'webhook',
-      eventAction: 'send'
+      eventCategory: 'contextMenu',
+      eventAction: 'webhook'
     });
   } else {
     alert('Error: Webhook action is not defined.');

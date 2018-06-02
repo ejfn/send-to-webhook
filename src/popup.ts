@@ -57,8 +57,8 @@ function sendArbitrary() {
       ga('set', 'checkProtocolTask', () => { /* do nothing */ });
       ga('send', {
         hitType: 'event',
-        eventCategory: 'webhook',
-        eventAction: 'send'
+        eventCategory: 'arbitrary',
+        eventAction: 'webhook'
       });
 
     } else {
