@@ -40,10 +40,8 @@ function sendArbitrary() {
       sendStatus.textContent = 'Sending...';
       fetch(url, {
         method: method || 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
-        body
+        body,
+        mode: 'no-cors'
       }).then((resp) => {
         if (resp.status >= 400) {
           sendStatus.className = 'error';

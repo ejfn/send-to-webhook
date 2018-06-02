@@ -8,10 +8,8 @@ function send(param: string | undefined, action: WebhookAction) {
     }
     fetch(url, {
       method: method || 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body
+      body,
+      mode: 'no-cors'
     }).then((resp) => {
       alert(resp.status >= 400 ? `Error: ${resp.status}` : 'Successfully Sent!');
     }).catch((reason) => {
