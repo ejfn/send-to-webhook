@@ -36,7 +36,14 @@ function sendArbitrary() {
       if (payload !== undefined) {
         body = JSON.stringify(payload).replace('%s', content);
       }
-      fetch(url, { method: method || 'POST', body })
+      fetch(url, {
+        method: method || 'POST',
+        body,
+        headers: {
+          'content-type': 'application/json'
+        },
+        mode: 'cors'
+      })
         .then((resp) => {
           if (resp.status >= 400) {
             sendStatus.className = 'error';

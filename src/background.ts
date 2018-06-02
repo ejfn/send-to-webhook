@@ -6,7 +6,14 @@ function send(param: string | undefined, action: WebhookAction) {
     if (payload !== undefined) {
       body = JSON.stringify(payload).replace('%s', param);
     }
-    fetch(url, { method: method || 'POST', body })
+    fetch(url, {
+      method: method || 'POST',
+      body,
+      headers: {
+        'content-type': 'application/json'
+      },
+      mode: 'cors'
+    })
       .then((resp) => {
         alert(resp.status >= 400 ? `Error: ${resp.status}` : `Sent!`);
       })
