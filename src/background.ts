@@ -59,7 +59,18 @@ chrome.storage.sync.get({
         title: `Send "%s" to ${webhook.name}`,
         contexts: ['selection'],
         onclick: (info) => {
-          send(info.selectionText, webhook.action);
+          const text = info.selectionText === undefined
+            ? ''
+            : info.selectionText
+              .replace(/\\n/g, '\\n')
+              .replace(/\\'/g, '\\\'')
+              .replace(/\\"/g, '\\"')
+              .replace(/\\&/g, '\\&')
+              .replace(/\\r/g, '\\r')
+              .replace(/\\t/g, '\\t')
+              .replace(/\\b/g, '\\b')
+              .replace(/\\f/g, '\\f');
+          send(text, webhook.action);
         }
       });
     }
