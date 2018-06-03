@@ -35,7 +35,7 @@ hr {
   outline: none;
 }
 
-#send-status {
+.status label {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -51,6 +51,12 @@ hr {
 
 .vertical-menu a:hover {
   background-color: #eee;
+}
+
+.donate {
+  padding: 7px 21px;
+  text-decoration: none;
+  outline: none;
 }
 
 .row {

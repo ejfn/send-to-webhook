@@ -1,25 +1,15 @@
-function getWebhooksTextArea(): HTMLTextAreaElement {
-  return document.getElementById('webhooks') as HTMLTextAreaElement;
-}
-
-function getSaveStatus(): HTMLSpanElement {
-  return document.getElementById('save-status') as HTMLSpanElement;
-}
-
-function getSaveButton(): HTMLButtonElement {
-  return document.getElementById('save') as HTMLButtonElement;
-}
+const textArea = document.getElementById('webhooks') as HTMLTextAreaElement;
+const saveStatus = document.getElementById('save-status') as HTMLSpanElement;
+const saveButton = document.getElementById('save') as HTMLButtonElement;
 
 // Saves options to chrome.storage
 function save_options() {
-  const webhooksTa = getWebhooksTextArea();
   let webhooks: Webhook[];
   try {
-    webhooks = JSON.parse(webhooksTa.value);
+    webhooks = JSON.parse(textArea.value);
   } catch (error) {
-    const status = getSaveStatus();
-    status.className = 'error';
-    status.textContent = 'ERROR: Invalid json!';
+    saveStatus.className = 'error';
+    saveStatus.textContent = 'Invalid json!';
     return;
   }
   chrome.storage.sync.set({
@@ -27,11 +17,10 @@ function save_options() {
   }, () => {
     // reload extension
     chrome.runtime.reload();
-    const status = getSaveStatus();
-    status.className = '';
-    status.textContent = 'Options saved.';
+    saveStatus.className = '';
+    saveStatus.textContent = 'Options saved.';
     setTimeout(() => {
-      status.textContent = '';
+      saveStatus.textContent = '';
       window.close();
     }, 750);
   });
@@ -44,11 +33,9 @@ function restore_options() {
     webhooks: '[]'
   }, (items) => {
     const webhooks: Webhook[] = JSON.parse(items.webhooks);
-    const webhooksTa = getWebhooksTextArea();
-    webhooksTa.value = JSON.stringify(webhooks, null, 2);
+    textArea.value = JSON.stringify(webhooks, null, 2);
   });
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
-const saveButton = getSaveButton();
 saveButton.addEventListener('click', save_options);

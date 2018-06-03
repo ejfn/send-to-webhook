@@ -1,4 +1,3 @@
-// tslint:disable
 (function (i, s, o, g, r, a, m) {
   i['GoogleAnalyticsObject'] = r;
   i[r] = i[r] || function () {
@@ -13,4 +12,3 @@
 
 // Create GA tracker
 ga('create', 'UA-73153112-6', 'auto');
-// tslint:enable

@@ -1,8 +1,12 @@
 .buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
+}
+
+.buttons span {
+  margin-left: 5px;
 }
 
 .error {

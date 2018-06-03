@@ -6,6 +6,7 @@ const sendStatus = document.getElementById('send-status') as HTMLSpanElement;
 const optionsMenu = document.getElementById('options') as HTMLAnchorElement;
 const devMenu = document.getElementById('developers') as HTMLAnchorElement;
 const issueMenu = document.getElementById('issues') as HTMLAnchorElement;
+const donateBtn = document.getElementById('donate') as HTMLAnchorElement;
 
 let webhooks: Webhook[];
 
@@ -79,9 +80,11 @@ function sendArbitrary() {
   }
 }
 
+document.addEventListener('DOMContentLoaded', load_webhooks);
 sendBtn.addEventListener('click', sendArbitrary);
 optionsMenu.addEventListener('click', () => chrome.runtime.openOptionsPage());
 devMenu.addEventListener('click', () => chrome.tabs.create({ url: developersUrl }));
 issueMenu.addEventListener('click', () => chrome.tabs.create({ url: `${developersUrl}/issues` }));
-
-document.addEventListener('DOMContentLoaded', load_webhooks);
+donateBtn.addEventListener('click', () => chrome.tabs.create({
+  url: 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQC5T9DVNEHPU'
+}));
