@@ -26,17 +26,7 @@ function load_webhooks() {
 }
 
 function sendArbitrary() {
-  const content = contentTa.value === undefined
-    ? ''
-    : contentTa.value
-      .replace(/\\n/g, '\\n')
-      .replace(/\\'/g, '\\\'')
-      .replace(/\\"/g, '\\"')
-      .replace(/\\&/g, '\\&')
-      .replace(/\\r/g, '\\r')
-      .replace(/\\t/g, '\\t')
-      .replace(/\\b/g, '\\b')
-      .replace(/\\f/g, '\\f');
+  const content = escapeJsonValue(contentTa.value);
   if (webhookSel.selectedIndex !== -1) {
     const webhook = webhooks[webhookSel.selectedIndex];
     const webaction = webhook.action;

@@ -6,6 +6,7 @@
   "background": {
     "scripts": [
       "js/google-analytics.js",
+      "js/util.js",
       "js/background.js"
     ]
   },
