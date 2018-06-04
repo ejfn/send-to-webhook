@@ -1,3 +1,6 @@
+import { Webhook } from './types.js';
+import { escapeJsonValue } from './utils.js';
+
 const developersUrl = 'https://github.com/ericvan76/send-to-webhook';
 const contentTa = document.getElementById('content') as HTMLTextAreaElement;
 const webhookSel = document.getElementById('webhooks') as HTMLSelectElement;

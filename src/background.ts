@@ -1,3 +1,6 @@
+import { Webhook, WebhookAction } from './types.js';
+import { escapeJsonValue } from './utils.js';
+
 function send(param: string | undefined, action: WebhookAction) {
   if (param !== undefined && action !== undefined) {
     const { method, url, payload } = action;

@@ -1,3 +1,5 @@
+import { Webhook } from './types.js';
+
 const textArea = document.getElementById('webhooks') as HTMLTextAreaElement;
 const saveStatus = document.getElementById('save-status') as HTMLSpanElement;
 const saveButton = document.getElementById('save') as HTMLButtonElement;

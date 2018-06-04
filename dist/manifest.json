@@ -4,11 +4,7 @@
   "version": "1.6.7",
   "description": "Send link, image or selected text to webhooks by filters",
   "background": {
-    "scripts": [
-      "lib/google-analytics.js",
-      "js/util.js",
-      "js/background.js"
-    ]
+    "page": "background.html"
   },
   "browser_action": {
     "default_popup": "popup.html"
