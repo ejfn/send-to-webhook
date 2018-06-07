@@ -1,0 +1,49 @@
+.popup {
+  width: 320px;
+  padding: 5px;
+  .arbitrary {
+    padding: 7px 0px;
+    textarea {
+      display: block;
+      box-sizing: border-box;
+      resize: vertical;
+      width: 100%;
+      height: 100px;
+      outline: none;
+      margin-top: 7px;
+      margin-bottom: 7px;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      select {
+        max-width: 50%;
+        outline: none;
+      }
+      label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  hr {
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    border-color: #eee;
+  }
+  a {
+    color: black;
+    display: block;
+    padding: 7px 11px;
+    text-decoration: none;
+    outline: none;
+  }
+  a:hover {
+    background-color: #eee;
+  }
+  .error {
+    color: #f00;
+  }
+}

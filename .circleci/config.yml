@@ -35,30 +35,29 @@ jobs:
       - run:
           name: "Set Version Number"
           command: |
-            echo export VERSION=$(jq -r '.version' dist/manifest.json) >> $BASH_ENV
+            echo export VERSION=$(jq -r '.version' public/manifest.json) >> $BASH_ENV
             echo export BUILD_NUM=$((CIRCLE_BUILD_NUM-64)) >> $BASH_ENV
             source $BASH_ENV
-            jq '.version="'$VERSION.$BUILD_NUM'"' dist/manifest.json | sponge dist/manifest.json
+            jq '.version="'$VERSION.$BUILD_NUM'"' public/manifest.json | sponge public/manifest.json
 
       - run:
           name: "Build and Pack"
           command: |
             yarn install
-            yarn qualitycheck
             yarn build
-            zip -r dist.zip dist/
+            zip -r build.zip build/
 
       - run:
           name: "Upload & Publish Extension to the Google Chrome Store"
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
-              curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T dist.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}"
+              curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T build.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}"
               curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID}/publish"
             fi
 
       - store_artifacts:
-          path: ./dist.zip
+          path: ./build.zip
 
       - save_cache:
           paths:
