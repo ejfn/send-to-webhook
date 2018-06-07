@@ -1,9 +1,15 @@
 {
-  "defaultSeverity": "error",
   "extends": [
-    "tslint:recommended"
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier"
   ],
-  "jsRules": {},
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
   "rules": {
     "quotemark": [
       true,
@@ -11,7 +17,7 @@
     ],
     "interface-name": false,
     "trailing-comma": false,
-    "object-literal-sort-keys": false
-  },
-  "rulesDirectory": []
+    "object-literal-sort-keys": false,
+    "no-empty-interface": false
+  }
 }

@@ -7,5 +7,6 @@
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
   "tslint.configFile": "tslint.editor.json",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "beautify.tabSize": 2
 }

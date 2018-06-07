@@ -1,0 +1,14 @@
+.options {
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    span {
+      margin-left: 5px;
+    }
+  }
+  .error {
+    color: #f00;
+  }
+}

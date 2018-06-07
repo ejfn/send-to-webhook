@@ -1,24 +1,33 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "sourceMap": false,
-    "rootDir": "src",
-    "outDir": "dist/js",
+    "baseUrl": ".",
+    "outDir": "build/dist",
+    "module": "esnext",
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "sourceMap": true,
     "allowJs": true,
-    "noEmitHelpers": true,
-    "noEmitOnError": true,
-    "noImplicitAny": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.js"
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
   ]
 }
