@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactGA from 'react-ga';
 import { WebHook, WebHookAction } from 'src/typings/webhook';
-import { escapeJsonValue } from 'src/utils';
+import { escapeJsonValue, setBrowserIcon } from 'src/utils';
 
 interface Props {
   webhooks: WebHook[];
@@ -62,14 +62,22 @@ export class Background extends React.PureComponent<Props> {
       if (payload !== undefined) {
         body = JSON.stringify(payload).replace('%s', param);
       }
+      setBrowserIcon('Sending');
       fetch(url, {
         method: method || 'POST',
         body,
         mode: 'no-cors'
       }).then((resp) => {
-        alert(resp.status >= 400 ? `Error: ${resp.status}` : 'Successfully Sent!');
-      }).catch((reason) => {
-        alert(`Error: ${reason}`);
+        if (resp.status >= 400) {
+          setBrowserIcon('Error', `Error: ${resp.status}`);
+        } else {
+          setBrowserIcon('OK');
+          setTimeout(() => {
+            setBrowserIcon('Default');
+          }, 750);
+        }
+      }).catch((err: Error) => {
+        setBrowserIcon('Error', `Error: ${err.message}`);
       });
 
       // @see: http://stackoverflow.com/a/22152353/1958200

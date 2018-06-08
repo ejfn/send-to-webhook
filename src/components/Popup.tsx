@@ -3,7 +3,7 @@ import * as ReactGA from 'react-ga';
 import { DEVELOPERS_URL, DONATE_URL, ISSUES_URL } from 'src/constants';
 import { StoredData } from 'src/typings/storedData';
 import { WebHook } from 'src/typings/webhook';
-import { escapeJsonValue } from 'src/utils';
+import { escapeJsonValue, setBrowserIcon } from 'src/utils';
 
 import './Popup.css';
 
@@ -101,6 +101,7 @@ export class Popup extends React.PureComponent<Props, State> {
       if (payload !== undefined) {
         body = JSON.stringify(payload).replace('%s', content);
       }
+      setBrowserIcon('Sending');
       this.setState(s => ({ ...s, sendStatus: 'Sending...', error: false }));
       fetch(url, {
         method: method || 'POST',
@@ -108,15 +109,19 @@ export class Popup extends React.PureComponent<Props, State> {
         mode: 'no-cors'
       }).then((resp) => {
         if (resp.status >= 400) {
+          setBrowserIcon('Error', `Error: ${resp.status}`);
           this.setState(s => ({ ...s, sendStatus: `${resp.status}`, error: true }));
         } else {
-          this.setState(s => ({ ...s, sendStatus: 'Sent!', error: false }));
+          setBrowserIcon('OK');
+          this.setState(s => ({ ...s, sendStatus: 'Sent.', error: false }));
           setTimeout(() => {
+            setBrowserIcon('Default');
             this.setState(s => ({ ...s, sendStatus: '', error: false }));
           }, 750);
         }
-      }).catch((reason) => {
-        this.setState(s => ({ ...s, sendStatus: reason, error: true }));
+      }).catch((err: Error) => {
+        setBrowserIcon('Error', `Error: ${err.message}`);
+        this.setState(s => ({ ...s, sendStatus: `${err.message}`, error: true }));
       });
 
       // save last hook
