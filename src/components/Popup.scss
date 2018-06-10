@@ -1,8 +1,14 @@
 .popup {
   width: 320px;
-  padding: 5px;
+  input,
+  textarea,
+  button,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+  }
   .arbitrary {
-    padding: 7px 0px;
+    padding: 5px;
     textarea {
       display: block;
       box-sizing: border-box;

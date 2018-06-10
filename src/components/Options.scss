@@ -1,4 +1,10 @@
 .options {
+  input,
+  textarea,
+  button {
+    font-family: inherit;
+    font-size: inherit;
+  }
   .buttons {
     display: flex;
     flex-direction: row;
