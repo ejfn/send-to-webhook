@@ -11,7 +11,7 @@ See [Extension Page](https://goo.gl/kbwRVB)
 Simply paste your json config into Options page and save.
 > Sorry for no editor, I will make one when I have time.
 
-The JSON config is a list of WebHook definitions:
+The JSON config is a list of config which defines page/link matching rules and WebHook definition:
 
 |Field name|Required|Description|
 |--|--|--|
