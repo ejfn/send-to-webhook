@@ -2,28 +2,45 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:7.10
+
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/node:7.10
-
-    working_directory: ~/repo
-
-    branches:
-      only:
-        - master
-
+    <<: *defaults
     steps:
       - checkout
-
       # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
+      - run:
+          name: "Build and Pack"
+          command: |
+            yarn install
+            yarn build
+            zip -r build.zip build/
+      - store_artifacts:
+          path: ./build.zip
+      - persist_to_workspace:
+          root: build
+          paths:
+            - ./*
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo/build
       - run:
           name: "Install dependencies"
           command: |
@@ -31,35 +48,36 @@ jobs:
             sudo apt-get install -y curl
             sudo apt-get install -y jq
             sudo apt-get install -y moreutils
-
       - run:
           name: "Set Version Number"
           command: |
-            echo export VERSION=$(jq -r '.version' public/manifest.json) >> $BASH_ENV
-            echo export BUILD_NUM=$((CIRCLE_BUILD_NUM-64)) >> $BASH_ENV
-            source $BASH_ENV
-            jq '.version="'$VERSION.$BUILD_NUM'"' public/manifest.json | sponge public/manifest.json
-
+            jq '.version="'${CIRCLE_TAG}'"' build/manifest.json | sponge build/manifest.json
       - run:
-          name: "Build and Pack"
+          name: "Pack"
           command: |
-            yarn install
-            yarn build
             zip -r build.zip build/
-
+      - store_artifacts:
+          path: ./build.zip
       - run:
           name: "Upload & Publish Extension to the Google Chrome Store"
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
-              curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T build.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}"
-              curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID}/publish"
-            fi
+            ACCESS_TOKEN=$(curl "https://accounts.google.com/o/oauth2/token" -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&refresh_token=${REFRESH_TOKEN}&grant_type=refresh_token&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
+            curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -X PUT -T build.zip -v "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${APP_ID}"
+            curl -H "Authorization: Bearer ${ACCESS_TOKEN}" -H "x-goog-api-version: 2" -H "Content-Length: 0" -X POST -v "https://www.googleapis.com/chromewebstore/v1.1/items/${APP_ID}/publish"
 
-      - store_artifacts:
-          path: ./build.zip
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+workflows:
+  version: 2
+  build-n-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^[0-9]+\.[0-9]+\.[0-9]+$/
+            branches:
+              ignore: /.*/
