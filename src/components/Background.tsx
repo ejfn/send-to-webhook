@@ -60,7 +60,10 @@ export class Background extends React.PureComponent<Props> {
       const { method, url, payload } = action;
       let body;
       if (payload !== undefined) {
-        body = JSON.stringify(payload).replace('%s', param);
+        body = JSON.stringify(payload)
+          .replace('%d', new Date().toISOString())
+          .replace('%l', new Date().toLocaleString())
+          .replace('%s', param);
       }
       setBrowserIcon('Sending');
       fetch(url, {

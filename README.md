@@ -21,7 +21,13 @@ The JSON config is a list of config which defines page/link matching rules and W
 |`action`| Required| Lets you define webhook endpoint.|
 |`action.method`| Optional| Default `POST`.|
 |`action.url`| Required| The url of the webhook|
-|`action.payload`| Optional|The json payload of the webhook data. you can use `%s` within the payload to represent the matched selected text, src or href values.|
+|`action.payload`| Optional|The json payload of the webhook data. You can use following templates to do some simple payload composing|
+
+|Templates||
+|--|:--|
+|`%s`|selected text|
+|`%d`|current date time in ISO format |
+|`%l`|current date time in Locale format |
 
 ### Example 1
 
