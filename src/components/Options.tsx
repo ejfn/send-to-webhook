@@ -32,7 +32,7 @@ export class Options extends React.PureComponent<Props, State> {
         <h3>WebHooks</h3>
         <textarea rows={25} cols={80} value={this.state.text} onChange={this.onTextChange} />
         <div>
-          <a href={HOWTO_CONFIG_URL}>How to configure this?</a>
+          <a href={HOWTO_CONFIG_URL} target='_blank'>How to configure this?</a>
         </div>
         <div className='buttons'>
           <button onClick={this.onSave}>Save &amp; Close</button>
