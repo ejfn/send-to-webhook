@@ -113,6 +113,6 @@ I want to grab a matched .ipa or .apk link from Expo's build page, and send to B
 | 2018-06-02 | Add ability to send arbitrary text |
 | 2018-05-29 | First published |
 
-### Help us
+### Buy me a coffee!
 
-[![](https://www.paypalobjects.com/en_AU/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=RBUDZ9FDP8MFY&no_recurring=0&currency_code=AUD)
+[![](https://www.paypalobjects.com/en_AU/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=RBUDZ9FDP8MFY&no_recurring=0&currency_code=AUD)
