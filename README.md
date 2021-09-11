@@ -115,4 +115,4 @@ I want to grab a matched .ipa or .apk link from Expo's build page, and send to B
 
 ### Help us
 
-[![](https://www.paypalobjects.com/en_AU/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YQC5T9DVNEHPU)
+[![](https://www.paypalobjects.com/en_AU/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=RBUDZ9FDP8MFY&no_recurring=0&currency_code=AUD)
