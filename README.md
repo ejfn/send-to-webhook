@@ -11,21 +11,22 @@ Simply paste your json config into Options page and save.
 
 The JSON config is a list of config which defines page/link matching rules and WebHook definition:
 
-|Field name|Required|Description|
-|--|--|--|
-|`name`| Required| The name of the webhook, will be displayed in the context menu title.|
-|`documentUrlPatterns`| Optional| Lets you restrict the item to apply only to documents whose URL matches one of the given patterns. For details on the format of a pattern, see [Match Patterns](https://developer.chrome.com/extensions/match_patterns).|
-|`targetUrlPatterns`|Optional|Similar to `documentUrlPatterns`, but lets you filter based on the src attribute of img tags and the href of anchor tags. If not provided, the item will be applied to selected text.|
-|`action`| Required| Lets you define webhook endpoint.|
-|`action.method`| Optional| Default `POST`.|
-|`action.url`| Required| The url of the webhook|
-|`action.payload`| Optional|The json payload of the webhook data. You can use following templates to do some simple payload composing|
+| Field name            | Required | Description                                                                                                                                                                                                              |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `name`                | Required | The name of the webhook, will be displayed in the context menu title.                                                                                                                                                    |
+| `documentUrlPatterns` | Optional | Lets you restrict the item to apply only to documents whose URL matches one of the given patterns. For details on the format of a pattern, see [Match Patterns](https://developer.chrome.com/extensions/match_patterns). |
+| `targetUrlPatterns`   | Optional | Similar to `documentUrlPatterns`, but lets you filter based on the src attribute of img tags and the href of anchor tags. If not provided, the item will be applied to selected text.                                    |
+| `action`              | Required | Lets you define webhook endpoint.                                                                                                                                                                                        |
+| `action.method`       | Optional | Default `POST`.                                                                                                                                                                                                          |
+| `action.url`          | Required | The url of the webhook                                                                                                                                                                                                   |
+| `action.payload`      | Optional | The json payload of the webhook data. You can use following templates to do some simple payload composing                                                                                                                |
+| `action.headers`      | Optional | Http headers for the request                                                                                                                                                                                             |
 
-|Templates||
-|--|:--|
-|`%s`|selected text|
-|`%d`|current date time in ISO format |
-|`%l`|current date time in Locale format |
+| Templates |                                    |
+| --------- | :--------------------------------- |
+| `%s`      | selected text                      |
+| `%d`      | current date time in ISO format    |
+| `%l`      | current date time in Locale format |
 
 ### Example 1
 
@@ -106,10 +107,11 @@ I want to grab a matched .ipa or .apk link from Expo's build page, and send to B
 ```
 
 ### What's New
-| Date | Description |
-| ---- | ----------- |
-| 2018-06-02 | Add ability to send arbitrary text |
-| 2018-05-29 | First published |
+| Date       | Description                                 |
+| ---------- | ------------------------------------------- |
+| 2022-08-10 | Allow http headers to be set in the request |
+| 2018-06-02 | Add ability to send arbitrary text          |
+| 2018-05-29 | First published                             |
 
 ### Buy me a coffee!
 

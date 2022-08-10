@@ -57,7 +57,7 @@ export class Background extends React.PureComponent<Props> {
 
   private send(param: string | undefined, action: WebHookAction) {
     if (param !== undefined && action !== undefined) {
-      const { method, url, payload } = action;
+      const { method, url, payload, headers } = action;
       let body;
       if (payload !== undefined) {
         body = JSON.stringify(payload)
@@ -69,6 +69,7 @@ export class Background extends React.PureComponent<Props> {
       fetch(url, {
         method: method || 'POST',
         body,
+        headers,
         mode: 'no-cors'
       }).then((resp) => {
         if (resp.status >= 400) {

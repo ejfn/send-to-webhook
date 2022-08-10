@@ -9,4 +9,5 @@ export interface WebHookAction {
   method?: 'GET' | 'POST';
   url: string;
   payload?: any;
+  headers?: {};
 }
