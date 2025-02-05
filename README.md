@@ -1,4 +1,6 @@
-## This project has been deprecated. Google no longer accept manifest v2 and the current version in the Chrome web store will be removed at sometime. Unforturately I cannot make any time to maintain this. If anyone is interested, feel free to fork and keep it going. Sorry for the inconvenience to the existing users.
+## This project has been deprecated. Google no longer accept manifest v2 and the current version in the Chrome web store will be removed at sometime. Unforturately I cannot make any time to maintain this. Thanks to chris86tian for the new fork supporting v3.
+
+Fork: https://github.com/chris86tian/URL-Webhook-Clipper/
 
 ## Send To WebHook
 
