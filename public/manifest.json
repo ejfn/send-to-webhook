@@ -1,26 +1,28 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Send To WebHook",
-  "version": "1.6.10",
+  "version": "0.1.0",
   "description": "Send link, image or selected text to webhooks by filters",
   "background": {
-    "page": "index.html?page=background"
+    "service_worker": "scripts/background.js",
+    "type": "module"
   },
-  "browser_action": {
-    "default_popup": "index.html?page=popup"
+  "action": {
+    "default_popup": "popup.html"
   },
   "permissions": [
     "contextMenus",
     "storage"
   ],
-  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "icons": {
     "16": "images/icon-16.png",
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
   "options_ui": {
-    "page": "index.html?page=options",
-    "chrome_style": true
+    "page": "options.html"
   }
 }

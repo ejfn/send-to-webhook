@@ -1,122 +1,90 @@
-## This project has been deprecated. Google no longer accept manifest v2 and the current version in the Chrome web store will be removed at sometime. Unforturately I cannot make any time to maintain this. 
-
-## Please use this instead https://github.com/chris86tian/URL-Webhook-Clipper/
-
 ## Send To WebHook
 
-A Chrome Extension, send link, image or selected text to webhooks by filters
-
-See [Extension Page](https://goo.gl/kbwRVB)
-
+A Chrome Extension to send links, images, or selected text to configurable webhooks. [View on Chrome Web Store](https://goo.gl/kbwRVB)
 ### How to Configure
+Configure your webhooks to quickly send page information to predefined endpoints. Each webhook configuration includes the following fields:
+*   **Webhook Name**: A descriptive name for your webhook (e.g., "My Slack Channel", "Bitrise iOS Upload"). This name will appear in the extension's popup menu.
 
-Simply paste your json config into Options page and save.
-> Sorry for no editor, I will make one when I have time.
+*   **Document URL Patterns**: (Optional) One pattern per line. Use this to restrict when the webhook appears. The webhook will only be available on pages whose URLs match one of these patterns. For details on pattern format, refer to [Match Patterns](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns).
 
-The JSON config is a list of config which defines page/link matching rules and WebHook definition:
+*   **Target URL Patterns**: (Optional) One pattern per line. Similar to Document URL Patterns, but applies when you right-click on a link or image. The webhook will only be available for links or images whose URLs match one of these patterns. If not provided, the webhook will apply to selected text. For details on pattern format, refer to [Match Patterns](https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns).
 
-| Field name            | Required | Description                                                                                                                                                                                                              |
-| --------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `name`                | Required | The name of the webhook, will be displayed in the context menu title.                                                                                                                                                    |
-| `documentUrlPatterns` | Optional | Lets you restrict the item to apply only to documents whose URL matches one of the given patterns. For details on the format of a pattern, see [Match Patterns](https://developer.chrome.com/extensions/match_patterns). |
-| `targetUrlPatterns`   | Optional | Similar to `documentUrlPatterns`, but lets you filter based on the src attribute of img tags and the href of anchor tags. If not provided, the item will be applied to selected text.                                    |
-| `action`              | Required | Lets you define webhook endpoint.                                                                                                                                                                                        |
-| `action.method`       | Optional | Default `POST`.                                                                                                                                                                                                          |
-| `action.url`          | Required | The url of the webhook                                                                                                                                                                                                   |
-| `action.payload`      | Optional | The json payload of the webhook data. You can use following templates to do some simple payload composing                                                                                                                |
-| `action.headers`      | Optional | Http headers for the request                                                                                                                                                                                             |
+*   **HTTP Method**: Choose the HTTP method for the request: `POST` (for sending data) or `GET` (for retrieving data). Defaults to `POST`.
 
-| Templates |                                    |
-| --------- | :--------------------------------- |
-| `%s`      | selected text                      |
-| `%d`      | current date time in ISO format    |
-| `%l`      | current date time in Locale format |
+*   **Webhook Endpoint URL**: The full URL of the target endpoint where the data will be sent (e.g., `https://hooks.slack.com/services/...`).
 
-### Example 1
+*   **Request Body (JSON)**: (Optional) Define the request body as a JSON object or a plain string. You can use the following placeholders to dynamically insert content:
+    *   `%s`: Inserts the selected text.
+    *   `%d`: Inserts the current date and time in ISO format.
+    *   `%l`: Inserts the current date and time in locale format.
 
-Send selected text to my slack's #random channel
-```
-[
-  {
-    "name": "MySlack#random",
-    "action": {
-      "url": "<YOUR-SLACK-CHANNELS-INCOMING-WEBHOOK-URL>",
-      "payload": {
-        "text": "%s"
-      }
+    Example JSON body with templates:
+    ```json
+    {
+      "selectedText": "%s",
+      "isoDate": "%d",
+      "localeDate": "%l"
     }
-  }
-]
-```
+    ```
+
+*   **Request Headers**: (Optional) Add custom HTTP headers as key-value pairs. Click "Add Header" to add new fields, and "Remove" to delete them.
 
 
-### Example 2
 
-I want to grab a matched .ipa or .apk link from Expo's build page, and send to Bitrise triggering a job to upload build assets to TestFlight or PlayStore. (because Expo doesn't support build webhook, not yet)
-```
-[
-  {
-    "name": "Bitrise iOS Upload",
-    "targetUrlPatterns": [
-      "https://*.amazonaws.com/ios%2F%40username%2Ftestapp-*-archive.ipa"
-    ],
-    "action": {
-      "url": "https://app.bitrise.io/app/xxxxxxxxxx/build/start.json",
-      "payload": {
-        "hook_info": {
-          "type": "bitrise",
-          "api_token": "<BITRISE_API_TOKEN>"
-        },
-        "build_params": {
-          "workflow_id": "ios"
-        },
-        "environments": [
-          {
-            "mapped_to": "IPA_URL",
-            "value": "%s",
-            "is_expand": true
-          }
-        ],
-        "triggered_by": "send-to-webhook"
-      }
+
+
+### Examples
+
+
+
+#### Example 1: Send selected text to Slack
+
+*   **Webhook Name**: MySlack#random
+*   **Document URL Patterns**: (empty)
+*   **Target URL Patterns**: (empty)
+*   **HTTP Method**: POST
+*   **Webhook Endpoint URL**: `<YOUR-SLACK-CHANNELS-INCOMING-WEBHOOK-URL>`
+*   **Request Body (JSON)**:
+    ```json
+    {
+      "selectedText": "%s"
     }
-  },
-  {
-    "name": "Bitrise Android Upload",
-    "targetUrlPatterns": [
-      "https://*.amazonaws.com/android%2F%40username%2Ftestapp-*-signed.apk"
-    ],
-    "action": {
-      "url": "https://app.bitrise.io/app/xxxxxxxxxx/build/start.json",
-      "payload": {
-        "hook_info": {
-          "type": "bitrise",
-          "api_token": "<BITRISE_API_TOKEN>"
-        },
-        "build_params": {
-          "workflow_id": "android"
-        },
-        "environments": [
-          {
-            "mapped_to": "APK_URL",
-            "value": "%s",
-            "is_expand": true
-          }
-        ],
-        "triggered_by": "send-to-webhook"
-      }
+    ```
+*   **Request Headers**: (empty)
+
+#### Example 2: Bitrise iOS Upload
+
+*   **Webhook Name**: Bitrise iOS Upload
+*   **Document URL Patterns**: (empty)
+*   **Target URL Patterns**: `https://*.amazonaws.com/ios%2F%40username%2Ftestapp-*-archive.ipa`
+*   **HTTP Method**: POST
+*   **Webhook Endpoint URL**: `https://app.bitrise.io/app/xxxxxxxxxx/build/start.json`
+*   **Request Body (JSON)**:
+    ```json
+    {
+      "hook_info": {
+        "type": "bitrise",
+        "api_token": "<BITRISE_API_TOKEN>"
+      },
+      "build_params": {
+        "workflow_id": "ios"
+      },
+      "environments": [
+        {
+          "mapped_to": "IPA_URL",
+          "value": "%s",
+          "is_expand": true
+        }
+      ],
+      "triggered_by": "send-to-webhook"
     }
-  }
-]
-```
+    ```
+*   **Request Headers**: (empty)
 
 ### What's New
 | Date       | Description                                 |
 | ---------- | ------------------------------------------- |
+| 2025-07-26 | Upgraded to Manifest V3. Improved UI/UX for options page with form-based editor and dynamic header fields. Removed Google Analytics. |
 | 2022-08-10 | Allow http headers to be set in the request |
 | 2018-06-02 | Add ability to send arbitrary text          |
 | 2018-05-29 | First published                             |
-
-### Buy me a coffee!
-
-[![](https://www.paypalobjects.com/en_AU/i/btn/btn_donate_LG.gif)](https://www.paypal.com/donate?business=RBUDZ9FDP8MFY&no_recurring=0&currency_code=AUD)

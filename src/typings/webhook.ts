@@ -9,5 +9,5 @@ export interface WebHookAction {
   method?: 'GET' | 'POST';
   url: string;
   payload?: any;
-  headers?: {};
+  headers?: { [key: string]: string }; // Added index signature
 }
