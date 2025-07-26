@@ -47,7 +47,7 @@ Configure your webhooks to quickly send page information to predefined endpoints
 *   **Request Body (JSON)**:
     ```json
     {
-      "selectedText": "%s"
+      "selectedText": "{{content}}"
     }
     ```
 *   **Request Headers**: (empty)
@@ -72,7 +72,7 @@ Configure your webhooks to quickly send page information to predefined endpoints
       "environments": [
         {
           "mapped_to": "IPA_URL",
-          "value": "%s",
+          "value": "{{content}}",
           "is_expand": true
         }
       ],
