@@ -14,16 +14,16 @@ Configure your webhooks to quickly send page information to predefined endpoints
 *   **Webhook Endpoint URL**: The full URL of the target endpoint where the data will be sent (e.g., `https://hooks.slack.com/services/...`).
 
 *   **Request Body (JSON)**: (Optional) Define the request body as a JSON object or a plain string. You can use the following placeholders to dynamically insert content:
-    *   `%s`: Inserts the selected text.
-    *   `%d`: Inserts the current date and time in ISO format.
-    *   `%l`: Inserts the current date and time in locale format.
+    *   `{{content}}`: Inserts the selected text, link URL, image URL, or current page URL/title depending on the context.
+    *   `{{isoDateTime}}`: Inserts the current date and time in ISO format.
+    *   `{{localDateTime}}`: Inserts the current date and time in locale format.
 
     Example JSON body with templates:
     ```json
     {
-      "selectedText": "%s",
-      "isoDate": "%d",
-      "localeDate": "%l"
+      "content": "{{content}}",
+      "isoDate": "{{isoDateTime}}",
+      "localeDate": "{{localDateTime}}"
     }
     ```
 

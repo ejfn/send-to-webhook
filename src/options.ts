@@ -1,6 +1,3 @@
-import { StoredData } from './typings/storedData.js';
-import { WebHook, WebHookAction } from './typings/webhook.js';
-
 const MATCH_PATTERNS_URL = 'https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -153,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <input type="text" class="action-url" value="${webhook.action?.url || ''}" data-index="${index}" placeholder="e.g., https://hooks.slack.com/services/..." />
 
               <label>Request Body (JSON):</label>
-              <textarea class="action-payload" data-index="${index}" placeholder="JSON payload. Use %s (selected text), %d (ISO date), %l (locale date).">${
+              <textarea class="action-payload" data-index="${index}" placeholder="JSON payload. {{content}}, {{isoDateTime}}, {{localDateTime}} are supported.">${
                 webhook.action?.payload ? JSON.stringify(webhook.action.payload, null, 2) : ''
               }</textarea>
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "tsc && cp -r public/. dist/",
+    "build": "rm -rf dist/ && tsc && cp -r public/. dist/",
     "watch": "tsc -w"
   },
   "devDependencies": {

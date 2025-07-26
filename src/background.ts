@@ -1,12 +1,41 @@
-import { StoredData } from "./typings/storedData.js";
-import { WebHook, WebHookAction } from "./typings/webhook.js";
-import { escapeJsonValue } from "./utils.js";
+function escapeJsonValue(value: string | undefined) {
+  const o: string[] = [value || ''];
+  const str = JSON.stringify(o);
+  return str.substring(2, str.length - 2);
+}
 
 // src/background.ts
 console.log('Bare-bones service worker loaded.');
 
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
   console.log('Bare-bones service worker installed.');
+  chrome.contextMenus.removeAll(); // Clear existing menus on install
+
+  const data: StoredData = {
+    webhooks: '[]',
+    previousIndex: -1
+  };
+  const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
+  const webhooks: WebHook[] = JSON.parse(items.webhooks);
+
+  for (const webhook of webhooks) {
+    const { name, documentUrlPatterns, targetUrlPatterns, action } = webhook;
+
+    const contexts: chrome.contextMenus.ContextType[] = [];
+    if (targetUrlPatterns && targetUrlPatterns.length > 0) {
+      contexts.push("link", "image");
+    } else {
+      contexts.push("selection", "page"); // For selected text and right-click on empty space
+    }
+
+    chrome.contextMenus.create({
+      id: name, // Use webhook name as ID for easy retrieval
+      title: name,
+      contexts: contexts,
+      documentUrlPatterns: documentUrlPatterns,
+      targetUrlPatterns: targetUrlPatterns
+    });
+  }
 });
 
 // Function to set the browser action icon and text (from original background.ts)
@@ -29,31 +58,28 @@ function setBrowserIcon(status: 'Default' | 'OK' | 'Error' | 'Sending', title?: 
       break;
     default:
       chrome.action.setBadgeText({ text: '' });
-      chrome.action.setTitle({ title: title || '' });
+      chrome.action.setTitle({ title: '' });
       break;
   }
 }
 
-// On installation, create the context menu (from original background.ts)
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({
-    id: "sendToWebhook",
-    title: "Send to WebHook",
-    contexts: ["selection", "link", "image"]
-  });
+// Listen for clicks on the extension icon
+chrome.action.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage();
 });
 
-// Listen for context menu clicks (from original background.ts)
+// Listen for context menu clicks
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId === "sendToWebhook") {
-    const data: StoredData = {
-      webhooks: '[]',
-      previousIndex: -1
-    };
-    const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
-    const webhooks: WebHook[] = JSON.parse(items.webhooks);
+  const data: StoredData = {
+    webhooks: '[]',
+    previousIndex: -1
+  };
+  const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
+  const webhooks: WebHook[] = JSON.parse(items.webhooks);
 
-    // Determine the content to send based on the context menu click
+  const clickedWebhook = webhooks.find(wh => wh.name === info.menuItemId);
+
+  if (clickedWebhook && clickedWebhook.action) {
     let content = '';
     if (info.selectionText) {
       content = info.selectionText;
@@ -61,19 +87,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       content = info.linkUrl;
     } else if (info.srcUrl) {
       content = info.srcUrl;
+    } else if (tab?.url) {
+      // If no specific element was clicked, send the page URL
+      content = tab.url;
     }
 
-    // Find matching webhooks and send data
-    for (const webhook of webhooks) {
-      const { documentUrlPatterns, targetUrlPatterns, action } = webhook;
-
-      const documentUrlMatch = documentUrlPatterns ? documentUrlPatterns.some(pattern => tab?.url && new RegExp(pattern.replace(/\*/g, '.*')).test(tab.url)) : true;
-      const targetUrlMatch = targetUrlPatterns ? targetUrlPatterns.some(pattern => info.linkUrl && new RegExp(pattern.replace(/\*/g, '.*')).test(info.linkUrl)) : true;
-
-      if (documentUrlMatch && targetUrlMatch) {
-        await sendWebhook(action, content);
-      }
-    }
+    await sendWebhook(clickedWebhook.action, content);
   }
 });
 
@@ -90,7 +109,13 @@ async function sendWebhook(action: WebHookAction, content: string) {
   let body;
 
   if (payload !== undefined) {
-    body = JSON.stringify(payload).replace('%s', escapeJsonValue(content));
+    const now = new Date();
+    const isoDateTime = now.toISOString();
+    const localDateTime = now.toLocaleString();
+    body = JSON.stringify(payload)
+      .replace('{{content}}', escapeJsonValue(content))
+      .replace('{{isoDateTime}}', isoDateTime)
+      .replace('{{localDateTime}}', localDateTime);
   }
 
   setBrowserIcon('Sending');
