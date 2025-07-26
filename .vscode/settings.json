@@ -6,9 +6,7 @@
   "files.insertFinalNewline": true,
   "files.eol": "\n",
   "files.trimTrailingWhitespace": true,
-  "tslint.configFile": "tslint.editor.json",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "beautify.tabSize": 2,
   "files.exclude": {
     "src/**/*.css": true
   }
