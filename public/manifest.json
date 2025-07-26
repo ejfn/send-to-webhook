@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Send To WebHook",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Send link, image or selected text to webhooks by filters",
   "background": {
     "service_worker": "scripts/background.js",

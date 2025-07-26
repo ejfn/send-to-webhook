@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const loadConfig = async () => {
     const data: StoredData = {
       webhooks: '[]',
-      previousIndex: -1
     };
     const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
     webhooks = JSON.parse(items.webhooks).map((wh: WebHook) => ({

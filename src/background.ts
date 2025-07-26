@@ -12,8 +12,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.removeAll(); // Clear existing menus on install
 
   const data: StoredData = {
-    webhooks: '[]',
-    previousIndex: -1
+    webhooks: '[]'
   };
   const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
   const webhooks: WebHook[] = JSON.parse(items.webhooks);
@@ -71,8 +70,7 @@ chrome.action.onClicked.addListener(() => {
 // Listen for context menu clicks
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   const data: StoredData = {
-    webhooks: '[]',
-    previousIndex: -1
+    webhooks: '[]'
   };
   const items: StoredData = await chrome.storage.sync.get(data) as StoredData;
   const webhooks: WebHook[] = JSON.parse(items.webhooks);

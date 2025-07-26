@@ -1,6 +1,5 @@
 interface StoredData {
   webhooks: string;
-  previousIndex: number;
 }
 
 interface WebHook {
