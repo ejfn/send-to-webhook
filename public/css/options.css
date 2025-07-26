@@ -1,0 +1,233 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.options {
+  width: 640px; /* Narrower width */
+  min-height: 600px; /* Slightly taller */
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  margin: 20px auto; /* Center the form */
+  background-color: #f9f9f9;
+}
+
+h3 {
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.webhook-entry {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  position: relative;
+  /* Add flexbox for better button positioning */
+  display: flex;
+  flex-direction: column;
+}
+
+.webhook-entry h4 {
+  margin-top: 0;
+  color: #0056b3;
+  margin-bottom: 15px;
+}
+
+.webhook-entry label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.webhook-entry input[type="text"],
+.webhook-entry textarea,
+.webhook-entry select {
+  width: 100%; /* Set to 100% and let padding/border be handled by box-sizing */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.webhook-entry textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.webhook-entry select {
+  cursor: pointer;
+  /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2C197.3L159.3%2C69.6c-3.7-3.7-9.8-3.7-13.5%2C0L5.4%2C197.3c-3.7%2C3.7-3.7%2C9.8%2C0%2C13.5l13.5%2C13.5c3.7%2C3.7%2C9.8%2C3.7%2C13.5%2C0l110.7-110.7c3.7-3.7%2C9.8-3.7%2C13.5%2C0l110.7%2C110.7c3.7%2C3.7%2C9.8%2C3.7%2C13.5%2C0l13.5-13.5C290.7%2C207.1%2C290.7%2C201%2C287%2C197.3z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+  padding-right: 30px; /* Make space for the arrow */
+}
+
+.webhook-entry .remove-webhook {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  /* Removed float and margin-top */
+  align-self: flex-end; /* Align to the end of the flex container */
+  margin-top: 10px; /* Add some top margin */
+}
+
+.webhook-entry .remove-webhook:hover {
+  background-color: #c82333;
+}
+
+#addWebhook {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+#addWebhook:hover {
+  background-color: #218838;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+#saveButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+#saveButton:hover {
+  background-color: #0056b3;
+}
+
+.buttons span {
+  font-size: 14px;
+  color: #333;
+  margin-right: 10px; /* Added margin to the right */
+}
+
+.error {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.headers-container {
+  border: 1px dashed #ccc;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  /* Ensure headers-container matches input/textarea width */
+  width: 100%; /* Set to 100% */
+  box-sizing: border-box;
+}
+
+.header-entry {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.header-entry input[type="text"] {
+  flex: 1;
+  margin-bottom: 0; /* Override default margin */
+}
+
+.header-entry .remove-header {
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.header-entry .remove-header:hover {
+  background-color: #e0a800;
+}
+
+.add-header {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-header:hover {
+  background-color: #138496;
+}
+
+.bottom-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribute space between items */
+  align-items: center;
+  margin-top: 20px;
+  flex-wrap: wrap; /* Allow items to wrap to the next line if space is limited */
+}
+
+.bottom-buttons #addWebhook {
+  margin-top: 0; /* Override previous margin */
+}
+
+.bottom-buttons .buttons {
+  margin-top: 0; /* Override previous margin */
+}
+
+.field-description {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 15px;
+}

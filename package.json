@@ -2,34 +2,12 @@
   "name": "send-to-webhook",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "prop-types": "^15.8.1",
-    "query-string": "^7.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-ga": "^3.3.1"
-  },
   "scripts": {
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "start-js": "react-scripts-ts start",
-    "build-js": "react-scripts-ts build",
-    "start": "npm-run-all -p watch-css start-js",
-    "build": "npm-run-all build-css build-js",
-    "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "build": "rm -rf dist/ && tsc && cp -r public/. dist/",
+    "watch": "tsc -w"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.193",
-    "@types/jest": "^28.1.6",
-    "@types/filesystem": "^0.0.32",
-    "@types/node": "^18.6.5",
-    "@types/query-string": "^6.3.0",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "node-sass-chokidar": "^2.0.0",
-    "npm-run-all": "^4.1.5",
-    "react-scripts-ts": "3.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^5.0.0",
+    "@types/chrome": "^0.0.268"
   }
 }

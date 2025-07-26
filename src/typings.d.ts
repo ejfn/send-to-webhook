@@ -1,13 +1,17 @@
-export interface WebHook {
+interface StoredData {
+  webhooks: string;
+}
+
+interface WebHook {
   name: string;
   documentUrlPatterns?: string[];
   targetUrlPatterns?: string[];
   action: WebHookAction;
 }
 
-export interface WebHookAction {
+interface WebHookAction {
   method?: 'GET' | 'POST';
   url: string;
   payload?: any;
-  headers?: {};
+  headers?: { [key: string]: string }; // Added index signature
 }
