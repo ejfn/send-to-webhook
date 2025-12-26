@@ -2,7 +2,10 @@
 
 A browser extension for **Chrome** and **Firefox** to send links, images, or selected text to configurable webhooks.
 
-[View on Chrome Web Store](https://goo.gl/kbwRVB) | [View on Firefox Add-ons](https://addons.mozilla.org/firefox/addon/send-to-webhook/)
+## 🌐 Download
+
+- **[Chrome Web Store](https://chromewebstore.google.com/detail/send-to-webhook/hoglpfllfgiennflpdodjpaaecpfodpe)**
+- **[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/send-to-webhook/)**
 
 ### Key Features
 - **Multi-browser support**: Unified codebase for Chrome and Firefox.
