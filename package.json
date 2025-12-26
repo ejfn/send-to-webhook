@@ -1,13 +1,32 @@
 {
   "name": "send-to-webhook",
-  "version": "0.1.0",
-  "private": true,
+  "version": "2.0.0",
+  "description": "Send link, image or selected text to webhooks by filters",
+  "type": "commonjs",
   "scripts": {
-    "build": "rm -rf dist/ && tsc && cp -r public/. dist/",
-    "watch": "tsc -w"
+    "dev": "vite",
+    "build": "npm run build:chrome && npm run build:firefox",
+    "build:chrome": "BROWSER=chrome vite build",
+    "build:firefox": "BROWSER=firefox vite build",
+    "zip:chrome": "cd dist-chrome && zip -r ../extension-chrome.zip .",
+    "zip:firefox": "cd dist-firefox && zip -r ../extension-firefox.zip .",
+    "package": "npm run build && npm run zip:chrome && npm run zip:firefox"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ejfn/send-to-webhook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ejfn/send-to-webhook/issues"
+  },
+  "homepage": "https://github.com/ejfn/send-to-webhook#readme",
   "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/node": "^22.0.0",
     "typescript": "^5.0.0",
-    "@types/chrome": "^0.0.268"
+    "vite": "^6.0.0"
   }
 }

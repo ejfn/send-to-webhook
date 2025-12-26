@@ -5,11 +5,11 @@ function escapeJsonValue(value: string | undefined) {
 }
 
 // src/background.ts
-console.log('Bare-bones service worker loaded.');
+console.log('Send to WebHook service worker loaded.');
 
-chrome.runtime.onInstalled.addListener(async () => {
-  console.log('Bare-bones service worker installed.');
-  chrome.contextMenus.removeAll(); // Clear existing menus on install
+// Function to create or update context menus
+async function updateContextMenus() {
+  await chrome.contextMenus.removeAll(); // Clear existing menus
 
   const data: StoredData = {
     webhooks: '[]'
@@ -18,7 +18,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   const webhooks: WebHook[] = JSON.parse(items.webhooks);
 
   for (const webhook of webhooks) {
-    const { name, documentUrlPatterns, targetUrlPatterns, action } = webhook;
+    const { name, documentUrlPatterns, targetUrlPatterns } = webhook;
 
     const contexts: chrome.contextMenus.ContextType[] = [];
     if (targetUrlPatterns && targetUrlPatterns.length > 0) {
@@ -31,13 +31,31 @@ chrome.runtime.onInstalled.addListener(async () => {
       id: name, // Use webhook name as ID for easy retrieval
       title: name,
       contexts: contexts,
-      documentUrlPatterns: documentUrlPatterns,
-      targetUrlPatterns: targetUrlPatterns
+      documentUrlPatterns: documentUrlPatterns && documentUrlPatterns.length > 0 ? documentUrlPatterns : undefined,
+      targetUrlPatterns: targetUrlPatterns && targetUrlPatterns.length > 0 ? targetUrlPatterns : undefined
     });
+  }
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+  console.log('Service worker installed.');
+  updateContextMenus();
+});
+
+chrome.runtime.onStartup.addListener(() => {
+  console.log('Browser startup.');
+  updateContextMenus();
+});
+
+// Listen for storage changes to update menus dynamically
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === 'sync' && changes.webhooks) {
+    console.log('Webhooks changed, updating context menus.');
+    updateContextMenus();
   }
 });
 
-// Function to set the browser action icon and text (from original background.ts)
+// Function to set the browser action icon and text
 function setBrowserIcon(status: 'Default' | 'OK' | 'Error' | 'Sending', title?: string) {
   switch (status) {
     case 'OK':
@@ -64,7 +82,7 @@ function setBrowserIcon(status: 'Default' | 'OK' | 'Error' | 'Sending', title?: 
 
 // Listen for clicks on the extension icon
 chrome.action.onClicked.addListener(() => {
-  chrome.runtime.openOptionsPage();
+  chrome.tabs.create({ url: chrome.runtime.getURL('src/options.html') });
 });
 
 // Listen for context menu clicks
@@ -94,14 +112,14 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-// Listen for messages from popup/options page to set browser icon (from original background.ts)
+// Listen for messages from popup/options page to set browser icon
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'SET_BROWSER_ICON') {
     setBrowserIcon(message.status, message.title);
   }
 });
 
-// Function to send the webhook request (from original background.ts)
+// Function to send the webhook request
 async function sendWebhook(action: WebHookAction, content: string) {
   const { method, url, payload, headers } = action;
   let body;

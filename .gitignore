@@ -19,7 +19,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-src/**/*.css
 
 # Build output
 /dist
+/dist-chrome
+/dist-firefox
+
+# Extension packages
+extension-chrome.zip
+extension-firefox.zip
+source-code.zip
