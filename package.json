@@ -10,7 +10,8 @@
     "build:firefox": "BROWSER=firefox vite build",
     "zip:chrome": "cd dist-chrome && zip -r ../extension-chrome.zip .",
     "zip:firefox": "cd dist-firefox && zip -r ../extension-firefox.zip .",
-    "package": "npm run build && npm run zip:chrome && npm run zip:firefox"
+    "zip:src": "rm -f extension-src.zip && zip -r extension-src.zip src",
+    "package": "npm run build && npm run zip:chrome && npm run zip:firefox && npm run zip:src"
   },
   "repository": {
     "type": "git",

@@ -28,4 +28,4 @@ yarn-error.log*
 # Extension packages
 extension-chrome.zip
 extension-firefox.zip
-source-code.zip
+extension-src.zip

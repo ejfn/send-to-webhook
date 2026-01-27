@@ -1,5 +1,17 @@
 const MATCH_PATTERNS_URL = 'https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns';
 
+// Helper function to escape HTML special characters
+const escapeHtml = (str: string): string => {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+};
+
+// Extended webhook type to track raw payload string for editing
+interface WebHookWithRawPayload extends WebHook {
+  rawPayload?: string;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const root = document.getElementById('root');
   if (!root) {
@@ -7,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  let webhooks: WebHook[] = [];
+  let webhooks: WebHookWithRawPayload[] = [];
   let saveStatus: string = '';
   let error: boolean = false;
 
@@ -23,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         url: wh.action?.url || '',
         payload: wh.action?.payload,
         headers: wh.action?.headers || {},
-      }
+      },
+      // Store raw payload string for editing
+      rawPayload: wh.action?.payload ? JSON.stringify(wh.action.payload, null, 2) : '',
     }));
     render();
   };
@@ -31,8 +45,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const onSave = () => {
     const webhookElements = document.querySelectorAll('.webhook-entry');
     const newWebhooks: WebHook[] = [];
+    let hasError = false;
 
     webhookElements.forEach(element => {
+      if (hasError) return; // Skip remaining if error occurred
+
       const name = (element.querySelector('.webhook-name') as HTMLInputElement)?.value || '';
       const documentUrlPatterns = (element.querySelector('.document-url-patterns') as HTMLTextAreaElement)?.value.split('\n').filter(p => p.trim() !== '') || [];
       const targetUrlPatterns = (element.querySelector('.target-url-patterns') as HTMLTextAreaElement)?.value.split('\n').filter(p => p.trim() !== '') || [];
@@ -58,8 +75,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
           action.payload = JSON.parse(payload);
         } catch (e) {
-          saveStatus = `Invalid JSON payload for webhook: ${name}`;
+          saveStatus = `Invalid JSON payload for webhook: ${name || '(unnamed)'}`;
           error = true;
+          hasError = true;
           render();
           return;
         }
@@ -76,6 +94,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
+    // Don't save if there was a JSON parsing error
+    if (hasError) return;
+
     const data: Partial<StoredData> = {
       webhooks: JSON.stringify(newWebhooks)
     };
@@ -83,7 +104,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     chrome.storage.sync.set(data, () => {
       saveStatus = 'Options saved.';
       error = false;
-      webhooks = newWebhooks; // Update local state after saving
+      webhooks = newWebhooks.map(wh => ({
+        ...wh,
+        rawPayload: wh.action?.payload ? JSON.stringify(wh.action.payload, null, 2) : '',
+      })); // Update local state after saving
       render();
       setTimeout(() => {
         saveStatus = '';
@@ -95,7 +119,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addWebhook = () => {
     webhooks.push({
       name: '',
-      action: { url: '', method: 'POST', headers: {} }
+      action: { url: '', method: 'POST', headers: {} },
+      rawPayload: '',
     });
     render();
   };
@@ -129,15 +154,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div id="webhookList">
           ${webhooks.map((webhook, index) => `
             <div class="webhook-entry">
-              <h4>Webhook ${index + 1}: ${webhook.name || '(New Webhook)'}</h4>
+              <h4>Webhook ${index + 1}: ${escapeHtml(webhook.name) || '(New Webhook)'}</h4>
               <label>Webhook Name:</label>
-              <input type="text" class="webhook-name" value="${webhook.name || ''}" data-index="${index}" placeholder="e.g., My Slack Channel, Bitrise iOS Upload" />
+              <input type="text" class="webhook-name" value="${escapeHtml(webhook.name || '')}" data-index="${index}" placeholder="e.g., My Slack Channel, Bitrise iOS Upload" />
 
               <label>Document URL Patterns: <a href="${MATCH_PATTERNS_URL}" target="_blank">(Match Patterns)</a></label>
-              <textarea class="document-url-patterns" data-index="${index}" placeholder="One pattern per line. Webhook appears on pages matching these URLs.">${(webhook.documentUrlPatterns || []).join('\n')}</textarea>
+              <textarea class="document-url-patterns" data-index="${index}" placeholder="One pattern per line. Webhook appears on pages matching these URLs.">${escapeHtml((webhook.documentUrlPatterns || []).join('\n'))}</textarea>
 
               <label>Target URL Patterns: <a href="${MATCH_PATTERNS_URL}" target="_blank">(Match Patterns)</a></label>
-              <textarea class="target-url-patterns" data-index="${index}" placeholder="One pattern per line. Webhook applies to links/images matching these URLs.">${(webhook.targetUrlPatterns || []).join('\n')}</textarea>
+              <textarea class="target-url-patterns" data-index="${index}" placeholder="One pattern per line. Webhook applies to links/images matching these URLs.">${escapeHtml((webhook.targetUrlPatterns || []).join('\n'))}</textarea>
 
               <label>HTTP Method:</label>
               <select class="action-method" data-index="${index}">
@@ -146,20 +171,18 @@ document.addEventListener('DOMContentLoaded', async () => {
               </select>
 
               <label>Webhook Endpoint URL:</label>
-              <input type="text" class="action-url" value="${webhook.action?.url || ''}" data-index="${index}" placeholder="e.g., https://hooks.slack.com/services/..." />
+              <input type="text" class="action-url" value="${escapeHtml(webhook.action?.url || '')}" data-index="${index}" placeholder="e.g., https://hooks.slack.com/services/..." />
 
               <label>Request Body (JSON):</label>
-              <textarea class="action-payload" data-index="${index}" placeholder="JSON payload. {{content}}, {{isoDateTime}}, {{localDateTime}} are supported.">${
-                webhook.action?.payload ? JSON.stringify(webhook.action.payload, null, 2) : ''
-              }</textarea>
+              <textarea class="action-payload" data-index="${index}" placeholder="JSON payload. {{content}}, {{isoDateTime}}, {{localDateTime}} are supported.">${escapeHtml(webhook.rawPayload || '')}</textarea>
 
               <label>Request Headers:</label>
               <div class="headers-container" data-webhook-index="${index}">
                 ${Object.entries(webhook.action?.headers || {}).map(([key, value]) => `
                   <div class="header-entry">
-                    <input type="text" class="header-key" value="${key}" data-webhook-index="${index}" data-header-key="${key}" placeholder="Header Name" />
-                    <input type="text" class="header-value" value="${value}" data-webhook-index="${index}" data-header-key="${key}" placeholder="Header Value" />
-                    <button class="remove-header" data-webhook-index="${index}" data-header-key="${key}">Remove</button>
+                    <input type="text" class="header-key" value="${escapeHtml(key)}" data-webhook-index="${index}" data-header-key="${escapeHtml(key)}" placeholder="Header Name" />
+                    <input type="text" class="header-value" value="${escapeHtml(value)}" data-webhook-index="${index}" data-header-key="${escapeHtml(key)}" placeholder="Header Value" />
+                    <button class="remove-header" data-webhook-index="${index}" data-header-key="${escapeHtml(key)}">Remove</button>
                   </div>
                 `).join('')}
                 <button class="add-header" data-webhook-index="${index}">Add Header</button>
@@ -227,11 +250,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (className.includes('action-url')) {
           currentWebhook.action.url = value;
         } else if (className.includes('action-payload')) {
-          try {
-            currentWebhook.action.payload = value ? JSON.parse(value) : undefined;
-          } catch (e) {
-            console.warn('Invalid JSON payload during input', e);
-          }
+          // Store raw payload string, don't parse during typing
+          // JSON will be validated on save
+          currentWebhook.rawPayload = value;
         }
       });
     });
